@@ -66,6 +66,41 @@ for i in hisseler:
     except AttributeError:
         continue
 
+    del tarihler[0:4]
+    allData=[data]
+
+    for _ in range(0,len(tarihler)+1):
+        if len(tarihler)==len(yillar):
+            del tarihler[0:4]
+        else:
+            yillar=[]
+            donemler=[]
+
+        if len(tarihler)>=4:
+            parameters2=(
+                ("companyCode",hisse),
+                ("exchange","TRY"),
+                ("financialGroup",grupOne),
+                ("year1",yillar[0]),
+                ("period1",donemler[0]),
+                ("year2",yillar[1]),
+                ("period2",donemler[1]),
+                ("year3",yillar[2]),
+                ("period3",donemler[2]),
+                ("year4",yillar[3]),
+                ("period4",donemler[3]),
+            )
+
+            r3=requests.get(url2,params=parameters2).json()["value"]
+            data2=pd.DataFrame.from_dict(r3)
+            try:
+                data.drop(columns=["itemCode","itemDescEng","itemDescTr"],inplace=True)
+                allData.append(data2)
+            except KeyError:
+                continue    
+     
+
+
 
 
 
